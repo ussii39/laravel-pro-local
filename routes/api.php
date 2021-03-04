@@ -27,7 +27,7 @@ Route::group(["middleware" => "guest:api"], function () {
 // Route::post("/login", "LoginController@login");
 Route::group(["middleware" => "auth:api"], function () {
 });
-Route::get("/me", "LoginController@me");
+
 // Route::get('me', 'AuthenticateController@getCurrentUser');
 Route::get('register/{code}', 'RegisterController@getcode');
 Route::post('register', 'RegisterController@register');
