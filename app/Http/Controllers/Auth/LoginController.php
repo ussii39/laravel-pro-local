@@ -1,36 +1,39 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\User;
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
-    function login(Request $request) {
-         
-        $token = $request->token;
-        
-        $user = User::where('token', $token)->get();
-        // if (!$token = auth("api")->attempt($credentials)) {
-        //     return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-        return response($user);
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
 
-    }
+    use AuthenticatesUsers;
 
-    public function me()
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        return response()->json(auth()->user());
-    }
-
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth("api")->factory()->getTTL() * 60
-        ]);
+        $this->middleware('guest')->except('logout');
     }
 }
